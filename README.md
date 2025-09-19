@@ -2,7 +2,7 @@
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)  [![PyTorch](https://img.shields.io/badge/PyTorch-2.4.1-blue)](https://pytorch.org/)
 
-This code is the official PyTorch implementation of our paper: DAG: A Dual Causal Network for Time Series Forecasting with Exogenous Variables.
+This code is the official PyTorch implementation of our paper: [DAG](https://arxiv.org/pdf/2509.14933): A Dual Causal Network for Time Series Forecasting with Exogenous Variables.
 
 If you find this project helpful, please don't forget to give it a ⭐ Star to show your support. Thank you!
 
