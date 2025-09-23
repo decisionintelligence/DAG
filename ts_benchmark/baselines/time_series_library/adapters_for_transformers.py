@@ -51,7 +51,7 @@ MODEL_HYPER_PARAMS = {
     "use_norm": True,
     "parallel_strategy": "DP",
     "task_name": "short_term_forecast",
-    "use_future_exog": False,
+    "use_future_exog": True,
     "covariate_dim": 6,
 }
 
