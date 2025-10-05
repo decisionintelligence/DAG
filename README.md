@@ -6,6 +6,9 @@ This code is the official PyTorch implementation of our paper, [DAG](https://arx
 
 If you find this project helpful, please don't forget to give it a ⭐ Star to show your support. Thank you!
 
+🚩 News (2025.10) We have open-sourced the [covariate time series forecasting leaderboard](https://decisionintelligence.github.io/OpenTS/leaderboards/#covariate_forecasting).
+
+
 ## Introduction
 DAG, which utilizes Dual cAusal network along both the temporal and channel dimensions for time series forecasting with exoGenous variables, especially leveraging future exogenous variable information. 
 
