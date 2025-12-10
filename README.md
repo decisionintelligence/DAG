@@ -67,4 +67,4 @@ If you have any questions or suggestions, feel free to contact:
 
 - [Xiangfei Qiu](https://qiu69.github.io/) (xfqiu@stu.ecnu.edu.cn)
 
-Or describe it in Issues.
+Or describe it in Issues.y
