@@ -18,7 +18,7 @@ The framework introduces a Temporal Causal Module which includes a temporal caus
 Additionally, a Channel Causal Module is introduced. It features a channel causal discovery module to model the impact of historical exogenous variables on historical endogenous variables and injects these relationships for improved forecasting of future endogenous variables based on future exogenous variables.
 
 <div align="center">
-<img alt="Logo" src="docs/figures/main.png" width="100%"/> 
+<img alt="Logo" src="docs/figures/main.png" width="100%"/>
 </div>
 
 ## Quickstart
