@@ -34,7 +34,7 @@ MODEL_HYPER_PARAMS = {
     "begin_order": 1,
     "mask_rate": 0.25,
     "anomaly_ratio": 0.25,
-    "num_workers": 10,
+    "num_workers": 1,
     "itr": 1,
     "num_epochs": 10,
     "batch_size": 16,

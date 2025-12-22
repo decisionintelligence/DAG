@@ -15,7 +15,7 @@ MODEL_HYPER_PARAMS = {
     "ma_type": "ema",
     "alpha": 0.3,
     "beta": 0.3,
-    "num_workers": 10,
+    "num_workers": 1,
     "num_epochs": 100,
     "batch_size": 32,
     "patience": 10,
