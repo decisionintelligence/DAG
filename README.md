@@ -1,8 +1,8 @@
-# <img src="docs/figures/icon.png" alt="Image description" style="width:27px;height:27px;"> DAG: A Dual Causal Network for Time Series Forecasting with Exogenous Variables
+# <img src="docs/figures/icon.png" alt="Image description" style="width:27px;height:27px;"> DAG: A Dual Correlation Network for Time Series Forecasting with Exogenous Variables
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)  [![PyTorch](https://img.shields.io/badge/PyTorch-2.4.1-blue)](https://pytorch.org/)
 
-This code is the official PyTorch implementation of our paper, [DAG](https://arxiv.org/pdf/2509.14933): A Dual Causal Network for Time Series Forecasting with Exogenous Variables.
+This code is the official PyTorch implementation of our paper, [DAG](https://arxiv.org/pdf/2509.14933): A Dual Correlation Network for Time Series Forecasting with Exogenous Variables.
 
 If you find this project helpful, please don't forget to give it a ⭐ Star to show your support. Thank you!
 
@@ -11,11 +11,11 @@ If you find this project helpful, please don't forget to give it a ⭐ Star to s
 
 
 ## Introduction
-DAG, which utilizes Dual cAusal network along both the temporal and channel dimensions for time series forecasting with exoGenous variables, especially leveraging future exogenous variable information. 
+DAG, which utilizes Dual correlAtion network along both the temporal and channel dimensions for time series forecasting with exoGenous variables, especially leveraging future exogenous variable information. 
 
-The framework introduces a Temporal Causal Module which includes a temporal causal discovery module to model how historical exogenous variables affect future exogenous variables, followed by a causal injection module to incorporate these relationships for forecasting future endogenous variables. 
+The framework introduces a Temporal Correlation Module which includes a temporal correlation discovery module to model how historical exogenous variables affect future exogenous variables, followed by a correlation injection module to incorporate these relationships for forecasting future endogenous variables. 
 
-Additionally, a Channel Causal Module is introduced. It features a channel causal discovery module to model the impact of historical exogenous variables on historical endogenous variables and injects these relationships for improved forecasting of future endogenous variables based on future exogenous variables.
+Additionally, a Channel Correlation Module is introduced. It features a channel correlation discovery module to model the impact of historical exogenous variables on historical endogenous variables and injects these relationships for improved forecasting of future endogenous variables based on future exogenous variables.
 
 <div align="center">
 <img alt="Logo" src="docs/figures/main.png" width="100%"/>
@@ -54,11 +54,6 @@ We utilize the Time Series Forecasting Benchmark (TFB) code repository as a unif
 <div align="center">
 <img alt="Logo" src="docs/figures/result1.png" width="100%"/>
 </div>
-
-<div align="center">
-<img alt="Logo" src="docs/figures/result2.png" width="100%"/>
-</div>
-
 
 
 ## Contact
