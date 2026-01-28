@@ -611,11 +611,11 @@ class DeepForecastingModelBase(ModelBase):
                 self._adjust_lr(optimizer, epoch + 1, config)
 
     def forecast(
-        self,
-        horizon: int,
-        series: pd.DataFrame,
-        *,
-        covariates: Optional[dict] = None,
+            self,
+            horizon: int,
+            series: pd.DataFrame,
+            *,
+            covariates: Optional[dict] = None,
     ) -> np.ndarray:
         """
         Make predictions.
@@ -629,10 +629,9 @@ class DeepForecastingModelBase(ModelBase):
         series_dim = series.shape[-1]
         exog_data = covariates.get("exog", None)
         if exog_data is not None:
-            series = pd.concat([series, exog_data], axis=1)
             if (
-                hasattr(self.config, "output_chunk_length")
-                and horizon != self.config.output_chunk_length
+                    hasattr(self.config, "output_chunk_length")
+                    and horizon != self.config.output_chunk_length
             ):
                 raise ValueError(
                     f"Error: 'exog' is enabled during training, but horizon ({horizon}) != output_chunk_length ({self.config.output_chunk_length}) during forecast."
@@ -641,8 +640,8 @@ class DeepForecastingModelBase(ModelBase):
         if self.check_point is not None:
             self.model.load_state_dict(self.check_point["Model"])
             if (
-                self.CovariateFusion is not None
-                and "CovariateFusion" in self.check_point
+                    self.CovariateFusion is not None
+                    and "CovariateFusion" in self.check_point
             ):
                 self.CovariateFusion.load_state_dict(
                     self.check_point["CovariateFusion"]
@@ -651,19 +650,23 @@ class DeepForecastingModelBase(ModelBase):
         if self.config.norm:
             if exog_data is not None:
                 # scaler series data with scaler1
-                series_values = series.iloc[:, :series_dim].values
+                series_values = series.values
                 scaled_series = self.scaler1.transform(series_values)
 
                 # scaler exog data with scaler2
-                exog_values = series.iloc[:, series_dim:].values
+                exog_values = exog_data.values
                 scaled_exog = self.scaler2.transform(exog_values)
 
+                # 保证目标列和协变量列的时间跨度长度一致
+                diff = scaled_exog.shape[0] - scaled_series.shape[0]
+                if diff > 0:
+                    scaled_series = np.pad(scaled_series, ((0, diff), (0, 0)), mode="constant")
                 # Combine scaled data
                 scaled_values = np.concatenate([scaled_series, scaled_exog], axis=1)
                 series = pd.DataFrame(
                     scaled_values,
-                    columns=series.columns,
-                    index=series.index,
+                    columns=list(series.columns) + list(exog_data.columns),
+                    index=exog_data.index,
                 )
             else:
                 series = pd.DataFrame(
@@ -675,9 +678,9 @@ class DeepForecastingModelBase(ModelBase):
         if self.model is None:
             raise ValueError("Model not trained. Call the fit() function first.")
 
+        # seq_len=1440；horizon:672 两者相加为2112
         config = self.config
-        series, test = split_time(series, len(series) - config.seq_len)
-        test = self.padding_data_for_forecast(test)
+        _, test = split_time(series, len(series) - config.seq_len - horizon)
 
         test_data_set, test_data_loader = forecasting_data_provider(
             test, config, timeenc=1, batch_size=1, shuffle=False, drop_last=False
@@ -699,19 +702,21 @@ class DeepForecastingModelBase(ModelBase):
                         input_mark.to(device),
                         target_mark.to(device),
                     )
-                    exog_future = target[:, -config.horizon :, series_dim:]
+                    exog_future = target[:, -config.horizon:, series_dim:]
                     out_loss = self._process(
                         input, target, input_mark, target_mark, exog_future
                     )
                     output = out_loss["output"]
                     if self.CovariateFusion is not None:
-                        output = output[:, -config.horizon :, :series_dim]
+                        output = output[:, -config.horizon:, :series_dim]
                         output = self.CovariateFusion(exog_future, output)
+                        break
                     else:
-                        output = output[:, -config.horizon :, :series_dim]
+                        output = output[:, -config.horizon:, :series_dim]
+                        break
 
                 column_num = output.shape[-1]
-                temp = output.cpu().numpy().reshape(-1, column_num)[-config.horizon :]
+                temp = output.cpu().numpy().reshape(-1, column_num)[-config.horizon:]
 
                 if answer is None:
                     answer = temp
@@ -725,11 +730,12 @@ class DeepForecastingModelBase(ModelBase):
                         )
                     return answer[-horizon:, :series_dim]
 
-                output = output.cpu().numpy()[:, -config.horizon :]
+                output = output.cpu().numpy()[:, -config.horizon:]
                 for i in range(config.horizon):
-                    test.iloc[i + config.seq_len] = output[0, i, :]
+                    test.iloc[i + config.seq_len, :series_dim] = output[0, i, :]
 
-                test = test.iloc[config.horizon :]
+                test = test.iloc[config.horizon:]
+                # 2112-336=1776
                 test = self.padding_data_for_forecast(test)
 
                 test_data_set, test_data_loader = forecasting_data_provider(
