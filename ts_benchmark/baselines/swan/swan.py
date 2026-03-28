@@ -23,12 +23,14 @@ MODEL_HYPER_PARAMS = {
     "patience": 10,
     "alpha": 0.2,
     "beta": 0.1,
+    # SWAN创新：时间分支外生变量自适应加权与渐进稀疏参数
     "lambda3": 0.01,
     "lambda3_warmup_steps": 500,
     "weight_threshold": 0.1,
     "weight_tau_init": 1.5,
     "weight_tau_min": 0.5,
     "weight_tau_decay": 0.999,
+    # SWAN创新：通道分支频域软聚类掩码与残差保真参数
     "mask_tau_init": 5.0,
     "mask_tau_min": 0.5,
     "mask_tau_decay": 0.9995,

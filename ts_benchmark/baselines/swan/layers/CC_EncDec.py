@@ -42,6 +42,7 @@ class DataEmbedding(nn.Module):
 class FrequencyMahalanobisMask(nn.Module):
     def __init__(self, input_size, tau_init, tau_min, tau_decay):
         super(FrequencyMahalanobisMask, self).__init__()
+        # SWAN创新：在频域构建可学习马氏度量，用于通道软聚类
         frequency_size = input_size // 2 + 1
         self.A = nn.Parameter(torch.randn(frequency_size, frequency_size), requires_grad=True)
         self.tau_min = tau_min
@@ -55,6 +56,7 @@ class FrequencyMahalanobisMask(nn.Module):
             self.tau = torch.clamp(self.tau * self.tau_decay, min=self.tau_min)
 
     def calculate_prob_distance(self, x):
+        # SWAN创新：以rFFT振幅表征通道频域语义相似性
         xf = torch.abs(torch.fft.rfft(x, dim=-1))
         diff = xf.unsqueeze(2) - xf.unsqueeze(1)
         q = torch.matmul(self.A.transpose(0, 1), self.A)
@@ -67,6 +69,7 @@ class FrequencyMahalanobisMask(nn.Module):
 
     def bernoulli_gumbel_rsample(self, distribution_matrix):
         self._update_tau()
+        # SWAN创新：Gumbel-Softmax近似Bernoulli采样，支持可微训练与降温离散化
         logits = torch.log(distribution_matrix) - torch.log(1 - distribution_matrix)
         new_matrix = torch.stack([logits, -logits], dim=-1)
         sampled = F.gumbel_softmax(new_matrix, tau=float(self.tau.item()), hard=True, dim=-1)[..., 0]
@@ -77,6 +80,7 @@ class FrequencyMahalanobisMask(nn.Module):
     def forward(self, x):
         distribution = self.calculate_prob_distance(x)
         sample = self.bernoulli_gumbel_rsample(distribution)
+        # SWAN创新：输出通道稀疏掩码并返回稀疏度统计用于正则
         mask = sample.unsqueeze(1)
         sparse_loss = sample.mean()
         return mask, sparse_loss
@@ -198,6 +202,7 @@ class CovCausalityEncoder(nn.Module):
                 exog_attns=causality_attns_i,
                 attn_alpha=attn_alpha_i,
                 attn_mask=None,
+                # SWAN创新：将软聚类掩码与残差保真参数注入通道注意力计算
                 channel_mask=channel_mask_i,
                 residual_beta=self.mask_residual_beta,
             )

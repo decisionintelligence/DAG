@@ -22,6 +22,7 @@ class SWANModel(nn.Module):
         self.infer_use_future = config.infer_use_future
         assert self.use_c or self.use_t
 
+        # SWAN创新：时间分支引入外生变量权重学习、软阈值稀疏与温度退火
         self.temporal_encoder = TemporalCausalityEncoder(
             enc_in=config.enc_in,
             seq_len=self.seq_len,
@@ -45,6 +46,7 @@ class SWANModel(nn.Module):
             weight_tau_decay=config.weight_tau_decay,
         )
 
+        # SWAN创新：通道分支引入频域马氏距离软聚类掩码与残差保真
         self.cov_encoder = CovCausalityEncoder(
             enc_in=config.enc_in,
             seq_len=self.seq_len,
@@ -103,5 +105,6 @@ class SWANModel(nn.Module):
 
         output = self._merge_output(t_output, c_output)
         causality_loss = self.beta * (temporal_causality_loss + cov_causality_loss)
+        # SWAN创新：总附加损失叠加时间稀疏正则与通道掩码稀疏正则
         additional_loss = causality_loss + weight_sparse_loss + self.mask_sparsity_lambda * mask_sparse_loss
         return output, additional_loss

@@ -36,6 +36,7 @@ class ExogenousWeightModule(nn.Module):
         tau_decay,
     ):
         super(ExogenousWeightModule, self).__init__()
+        # SWAN创新：外生变量级可学习权重模块（区别于DAG等权使用外生变量）
         self.exog_dim = exog_dim
         self.series_dim = series_dim
         self.lambda3 = lambda3
@@ -66,12 +67,15 @@ class ExogenousWeightModule(nn.Module):
         raw_weight = torch.sigmoid(self.weight_mlp(pooled)).squeeze(-1)
         self._update_tau()
         tau = self.tau.detach()
+        # SWAN创新：软阈值 + 温度退火，让权重从软选择逐步过渡到更稀疏选择
         smooth_weight = torch.sigmoid((raw_weight - self.threshold) / (tau + 1e-6))
         soft_weight = F.relu(smooth_weight - self.threshold)
         weighted_patch = reshaped * soft_weight.unsqueeze(-1).unsqueeze(-1)
         weighted_patch = weighted_patch.view(batch_size * exog_vars, patch_num, d_model)
         ramp = min(1.0, float(self.step.item()) / float(self.warmup_steps))
+        # SWAN创新：渐进式稀疏正则，训练前期弱约束、后期增强稀疏
         sparse_loss = self.lambda3 * ramp * soft_weight.mean()
+        # SWAN创新：把外生变量权重映射到内生通道门控，控制注入强度
         series_gate = torch.sigmoid(self.exog_to_series(soft_weight))
         return weighted_patch, sparse_loss, soft_weight, series_gate
 
@@ -174,6 +178,7 @@ class TemporalCausalityEncoder(nn.Module):
 
         sparse_loss = torch.tensor(0.0, device=x.device)
         if self.exog_weight is not None and exog_dim > 0:
+            # SWAN创新：先做外生变量加权再进入时间相关发现
             patch_exog, sparse_loss, soft_weight, series_gate = self.exog_weight(patch_exog, B, exog_vars)
         else:
             soft_weight = None
@@ -196,6 +201,7 @@ class TemporalCausalityEncoder(nn.Module):
         x_history_projection = self.x_projector(x_history)
         attn_alpha = torch.sigmoid(torch.einsum("bd,bd->b", x_history_projection, exog_history_projection)).view(-1, 1, 1, 1)
         attn_alpha = attn_alpha.repeat(self.series_dim, 1, 1, 1)
+        # SWAN创新：通过门控将变量权重注入到注意力融合系数
         attn_alpha = attn_alpha * series_gate.reshape(-1, 1, 1, 1)
 
         enc_x_out, _ = self.encoder_x(patch_x, exog_attns=causality_attns, attn_alpha=attn_alpha)

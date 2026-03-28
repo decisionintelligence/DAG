@@ -54,6 +54,7 @@ class FullAttention(nn.Module):
             full_attn = torch.softmax(full_attn, dim=-1)
 
         if channel_mask is not None:
+            # SWAN创新：掩码后注意力与全连接注意力做残差融合，避免弱连接信息完全丢失
             masked_scores = fused_scores.masked_fill(channel_mask == 0, -1e9)
             masked_attn = torch.softmax(masked_scores, dim=-1)
             attn_before_dropout = residual_beta * masked_attn + (1 - residual_beta) * full_attn
