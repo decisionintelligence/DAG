@@ -30,7 +30,7 @@ class TemporalCausalityEncoder(nn.Module):
         super(TemporalCausalityEncoder, self).__init__()
         self.seq_len = seq_len
         self.pred_len = pred_len
-        self.series_dim = series_dim
+        self.series_dim = series_dim     # 内生变量维度 N
         self.criterion = criterion
         padding = stride
 
@@ -79,10 +79,11 @@ class TemporalCausalityEncoder(nn.Module):
             head_dropout=dropout,
         )
 
-    def forward(self, x, exog_future, use_exog=True):
-        exog_history = x[:, :, self.series_dim:]
-        x_history = x[:, :, :self.series_dim]
+    def forward(self, x, exog_future, use_exog=True): # x: [batch_size, seq_len, n_vars]
+        exog_history = x[:, :, self.series_dim:]    # 外生变量序列（series_dim 内生变量维度）
+        x_history = x[:, :, :self.series_dim]       # 内生变量序列
 
+            # ==== 归一化 外生、内生序列 并 patch 级嵌入 ====
         _, _, EXOG_D = exog_history.shape
         B, L, X_D = x_history.shape
 
@@ -104,9 +105,10 @@ class TemporalCausalityEncoder(nn.Module):
         patch_exog, exog_vars = self.exog_patch_embedding(exog_history)
         patch_x, x_vars = self.x_patch_embedding(x_history)
 
+            # ==== 提取历史外生和未来外生的相关度，即使用历史外生变量预测未来外生变量，作为注入 ====
         enc_exog_out, _ = self.encoder_exg(patch_exog)
         if use_exog:
-            _, causality_attns = self.encoder_exg(patch_x)
+            _, causality_attns = self.encoder_exg(patch_x) # ？？？没有按照论文实现，而是提取历史内生和未来内生的相关度作为注入
         else:
             causality_attns = None
 
@@ -116,12 +118,15 @@ class TemporalCausalityEncoder(nn.Module):
         exog_history_projection = self.exog_projector(exog_history)  # batch size, d_model TODO
         x_history_projection = self.x_projector(x_history)
 
-        attn_alpha = F.sigmoid(torch.einsum('bd,bd->b', x_history_projection, exog_history_projection)).view(-1, 1, 1,
-                                                                                                             1)
+            # ==== 计算 α = sigmoid( dot(proj_x, proj_exog) )，形状 [B] -> [B,1,1,1] 用于广播 ====
+        attn_alpha = F.sigmoid(torch.einsum('bd,bd->b', x_history_projection, exog_history_projection)).view(-1, 1, 1,1)
+        
+            # ==== 注入并预测内生变量 ====                                                                                                     
         # print("tc attn_alpha mean:", torch.mean(attn_alpha))
         enc_x_out, _ = self.encoder_x(patch_x, exog_attns=causality_attns,
                                       attn_alpha=attn_alpha.repeat(self.series_dim, 1, 1, 1))
 
+            # 重新整理形状：从 [B*C, d_model, patch_num] -> [B, C, d_model, patch_num]
         enc_exog_out = torch.reshape(
             enc_exog_out, (-1, exog_vars, enc_exog_out.shape[-2], enc_exog_out.shape[-1])
         ).permute(0, 1, 3, 2)

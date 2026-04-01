@@ -24,18 +24,18 @@ MODEL_HYPER_PARAMS = {
     "alpha": 0.2,
     "beta": 0.1,
     # SWAN创新：时间分支外生变量自适应加权与渐进稀疏参数
-    "lambda3": 0.01,
-    "lambda3_warmup_steps": 500,
-    "weight_threshold": 0.1,
-    "weight_tau_init": 1.5,
-    "weight_tau_min": 0.5,
-    "weight_tau_decay": 0.999,
+    "lambda3": 0.01,  # 外生变量权重L1稀疏正则系数
+    "lambda3_warmup_steps": 500,  # 稀疏正则从弱到强的预热步数
+    "weight_threshold": 0.1,  # 外生变量权重软阈值，低于阈值的连接会被抑制
+    "weight_tau_init": 1.5,  # 权重门控温度初值，越大越平滑
+    "weight_tau_min": 0.5,  # 权重门控温度下限，防止退火过度
+    "weight_tau_decay": 0.999,  # 每步温度衰减率，控制从软选择到稀疏选择的速度
     # SWAN创新：通道分支频域软聚类掩码与残差保真参数
-    "mask_tau_init": 5.0,
-    "mask_tau_min": 0.5,
-    "mask_tau_decay": 0.9995,
-    "mask_residual_beta": 0.9,
-    "mask_sparsity_lambda": 0.0,
+    "mask_tau_init": 5.0,  # Gumbel-Softmax掩码采样温度初值
+    "mask_tau_min": 0.5,  # Gumbel温度下限，保留可学习性与稳定性
+    "mask_tau_decay": 0.9995,  # Gumbel温度衰减率，控制掩码离散化进程
+    "mask_residual_beta": 0.9,  # 掩码注意力占比，剩余部分走全连接残差注意力
+    "mask_sparsity_lambda": 0.0,  # 通道掩码稀疏正则系数
     "use_c_exog": True,
     "use_t_exog": True,
     "use_c": True,

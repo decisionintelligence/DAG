@@ -24,12 +24,13 @@ MODEL_HYPER_PARAMS = {
     "dbloss_alpha": 0.2,
     "dbloss_beta": 0.5,
     "patience": 10,
-    "alpha": 0.2,
-    "beta": 0.1,
-    "use_c_exog": True,
-    "use_t_exog": True,
-    "use_c": True,
-    "use_t": True,
+    "alpha": 0.2,   # 时间信息权重
+    "beta": 0.1,    # 因果信息权重
+    "use_c_exog": True, # 是否使用因果信息作为外生变量
+    "use_t_exog": True, # 是否使用时间信息作为外生变量
+    "use_c": True, # 是否使用因果信息
+    "use_t": True, # 是否使用时间信息
+
 
     "infer_use_future": True,
 
