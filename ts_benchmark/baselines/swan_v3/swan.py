@@ -87,7 +87,10 @@ class SWANV3(DeepForecastingModelBase):
         output, additional_loss = self.model(input, exog_future)
         if (not self.model.training) and hasattr(self.model, "update_validation_metric") and target is not None:
             with torch.no_grad():
-                val_metric = self.config.criterion(output, target)
+                # Validation batches may carry label_len + pred_len in target.
+                # Align target with model output shape before computing feedback metric.
+                aligned_target = target[:, -output.shape[1] :, : output.shape[2]]
+                val_metric = self.config.criterion(output, aligned_target)
                 self.model.update_validation_metric(val_metric)
         out_loss = {"output": output}
         if self.model.training:
