@@ -2,8 +2,8 @@
 
 # "sh ./atsd_mul.sh"
 
-CMD1="sh ./scripts/covariate_forecasting/SWAN_V3_TUNE_R3_part1.sh"
-CMD2="sh ./scripts/covariate_forecasting/SWAN_V3_TUNE_R3_part2.sh"
+CMD1="sh ./scripts/covariate_forecasting/SWAN_V3_TUNE_R4_part1.sh"
+CMD2="sh ./scripts/covariate_forecasting/SWAN_V3_TUNE_R4_part2.sh"
 
 if ! pgrep -f "$CMD1" > /dev/null; then
     echo "错误：程序 $CMD1 没有在运行，退出脚本。"
