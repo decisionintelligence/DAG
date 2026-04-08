@@ -1,0 +1,152 @@
+#!/usr/bin/env bash
+set -e
+
+echo "=== SWAN_V3 TUNE R3 part1 started ==="
+
+run_case() {
+  local dataset="$1"
+  local horizon="$2"
+  local seq_len="$3"
+  local save_path="$4"
+  local alpha="$5"
+  local batch_size="$6"
+  local d_ff="$7"
+  local d_model="$8"
+  local dropout="$9"
+  local e_layers="${10}"
+  local lr="${11}"
+  local lradj="${12}"
+  local n_heads="${13}"
+  local patch_len="${14}"
+  local stride="${15}"
+  local lambda3="${16:-}"
+  local weight_threshold="${17:-}"
+  local mask_sparsity_lambda="${18:-}"
+
+  local extra_sparse=""
+  if [ -n "$lambda3" ]; then
+    extra_sparse=", \"lambda3\": $lambda3, \"weight_threshold\": $weight_threshold, \"mask_sparsity_lambda\": $mask_sparsity_lambda"
+  fi
+
+  python ./scripts/run_benchmark.py \
+    --config-path "rolling_forecast_config.json" \
+    --data-name-list "$dataset" \
+    --strategy-args "{\"horizon\": $horizon, \"target_channel\": [-1]}" \
+    --model-name "swan_v3.SWANV3" \
+    --model-hyper-params "{\"alpha\": $alpha, \"batch_size\": $batch_size, \"d_ff\": $d_ff, \"d_model\": $d_model, \"dropout\": $dropout, \"e_layers\": $e_layers, \"horizon\": $horizon, \"loss\": \"MAE\", \"lr\": $lr, \"lradj\": \"$lradj\", \"n_heads\": $n_heads, \"norm\": true, \"num_epochs\": $GROUP_EPOCHS, \"patch_len\": $patch_len, \"patience\": $GROUP_PATIENCE, \"seq_len\": $seq_len, \"stride\": $stride, \"use_c\": 1, \"use_c_exog\": 1, \"use_t\": 1, \"use_t_exog\": 1, \"adaptive_alpha\": true, \"alpha_hidden\": 16, \"weight_gate_floor\": $GROUP_GATE_FLOOR, \"weight_gate_sharpness\": 8.0, \"freq_use_phase\": true, \"phase_weight\": $GROUP_PHASE_WEIGHT, \"target_mask_density\": $GROUP_TARGET_DENSITY, \"density_lambda\": $GROUP_DENSITY_LAMBDA, \"dynamic_sparse\": $GROUP_DYNAMIC_SPARSE, \"sparse_warmup_steps\": $GROUP_WARMUP, \"sparse_plateau_patience\": 100, \"sparse_beta_min\": 0.2, \"sparse_beta_max\": 1.0, \"sparse_step_up\": 0.05, \"sparse_step_down\": 0.02$extra_sparse}" \
+    --gpus 0 \
+    --num-workers 1 \
+    --timeout 60000 \
+    --save-path "$save_path"
+}
+
+# ======================================================
+# R3-1: Colbun-30（R2后仍显著落后 DAG）
+# ======================================================
+# A: 在 R2-A 基础上进一步稳收敛
+GROUP_EPOCHS=140
+GROUP_PATIENCE=20
+GROUP_PHASE_WEIGHT=0.10
+GROUP_TARGET_DENSITY=0.70
+GROUP_DENSITY_LAMBDA=0.015
+GROUP_GATE_FLOOR=0.03
+GROUP_DYNAMIC_SPARSE=false
+GROUP_WARMUP=200
+run_case "Colbun.csv" 30 180 "Colbun/SWAN_V3_TUNE_R3/Colbun_h30_A" 0.9 64 64 128 0.0 1 0.0003 "type3" 4 30 30
+
+# B: 降低容量抑制短期过拟合
+GROUP_EPOCHS=120
+GROUP_PATIENCE=15
+GROUP_PHASE_WEIGHT=0.08
+GROUP_TARGET_DENSITY=0.70
+GROUP_DENSITY_LAMBDA=0.01
+GROUP_GATE_FLOOR=0.03
+GROUP_DYNAMIC_SPARSE=false
+GROUP_WARMUP=200
+run_case "Colbun.csv" 30 180 "Colbun/SWAN_V3_TUNE_R3/Colbun_h30_B" 0.9 64 64 64 0.0 1 0.0005 "type3" 4 30 30
+
+# C: 更细 patch 做局部修复
+GROUP_EPOCHS=120
+GROUP_PATIENCE=15
+GROUP_PHASE_WEIGHT=0.12
+GROUP_TARGET_DENSITY=0.60
+GROUP_DENSITY_LAMBDA=0.02
+GROUP_GATE_FLOOR=0.03
+GROUP_DYNAMIC_SPARSE=false
+GROUP_WARMUP=200
+run_case "Colbun.csv" 30 180 "Colbun/SWAN_V3_TUNE_R3/Colbun_h30_C" 0.9 64 128 128 0.0 1 0.0005 "type3" 4 15 15
+
+# ======================================================
+# R3-2: NP-360（R2有改善但仍明显落后 DAG）
+# ======================================================
+# A: 延续 R2-C，降低学习率做精修
+GROUP_EPOCHS=140
+GROUP_PATIENCE=20
+GROUP_PHASE_WEIGHT=0.20
+GROUP_TARGET_DENSITY=0.50
+GROUP_DENSITY_LAMBDA=0.05
+GROUP_GATE_FLOOR=0.03
+GROUP_DYNAMIC_SPARSE=true
+GROUP_WARMUP=600
+run_case "NP.csv" 360 960 "NP/SWAN_V3_TUNE_R3/NP_h360_A" 0.9 64 256 128 0.0 1 0.0005 "type3" 4 32 32
+
+# B: 降低稀疏压力，偏向保信息
+GROUP_EPOCHS=120
+GROUP_PATIENCE=15
+GROUP_PHASE_WEIGHT=0.18
+GROUP_TARGET_DENSITY=0.65
+GROUP_DENSITY_LAMBDA=0.02
+GROUP_GATE_FLOOR=0.03
+GROUP_DYNAMIC_SPARSE=false
+GROUP_WARMUP=500
+run_case "NP.csv" 360 960 "NP/SWAN_V3_TUNE_R3/NP_h360_B" 0.9 64 256 128 0.0 1 0.001 "type1" 4 32 32
+
+# C: 保留轻量结构约束对照
+GROUP_EPOCHS=140
+GROUP_PATIENCE=20
+GROUP_PHASE_WEIGHT=0.20
+GROUP_TARGET_DENSITY=0.55
+GROUP_DENSITY_LAMBDA=0.03
+GROUP_GATE_FLOOR=0.03
+GROUP_DYNAMIC_SPARSE=true
+GROUP_WARMUP=600
+run_case "NP.csv" 360 960 "NP/SWAN_V3_TUNE_R3/NP_h360_C" 0.9 64 256 128 0.0 1 0.0005 "type3" 4 32 32 0.0002 0.035 0.00005
+
+# ======================================================
+# R3-3: Energy-360（R2明显改善但仍落后 DAG）
+# ======================================================
+# A: R2-A 的低学习率长训版
+GROUP_EPOCHS=140
+GROUP_PATIENCE=18
+GROUP_PHASE_WEIGHT=0.20
+GROUP_TARGET_DENSITY=0.50
+GROUP_DENSITY_LAMBDA=0.05
+GROUP_GATE_FLOOR=0.03
+GROUP_DYNAMIC_SPARSE=true
+GROUP_WARMUP=600
+run_case "Energy.csv" 360 720 "Energy/SWAN_V3_TUNE_R3/Energy_h360_A" 0.6 64 256 64 0.0 1 0.0001 "type3" 4 48 48
+
+# B: 扩大上下文长度
+GROUP_EPOCHS=140
+GROUP_PATIENCE=18
+GROUP_PHASE_WEIGHT=0.20
+GROUP_TARGET_DENSITY=0.50
+GROUP_DENSITY_LAMBDA=0.05
+GROUP_GATE_FLOOR=0.03
+GROUP_DYNAMIC_SPARSE=true
+GROUP_WARMUP=600
+run_case "Energy.csv" 360 960 "Energy/SWAN_V3_TUNE_R3/Energy_h360_B" 0.6 64 256 64 0.0 1 0.0003 "type3" 4 48 48
+
+# C: 轻量增容+温和dropout
+GROUP_EPOCHS=120
+GROUP_PATIENCE=15
+GROUP_PHASE_WEIGHT=0.18
+GROUP_TARGET_DENSITY=0.55
+GROUP_DENSITY_LAMBDA=0.03
+GROUP_GATE_FLOOR=0.03
+GROUP_DYNAMIC_SPARSE=false
+GROUP_WARMUP=500
+run_case "Energy.csv" 360 720 "Energy/SWAN_V3_TUNE_R3/Energy_h360_C" 0.6 64 512 128 0.05 1 0.0005 "type1" 8 48 48
+
+echo "=== SWAN_V3 TUNE R3 part1 finished ==="
+
