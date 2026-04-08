@@ -11,7 +11,7 @@ OUT_DIR = RESULT_DIR / "Z_showResult" / "SWAN_V3_FINAL"
 OUT_CSV = OUT_DIR / "compare_DAG_vs_SWAN_V3_FINAL_current_best.csv"
 OUT_HTML = OUT_DIR / "compare_DAG_vs_SWAN_V3_FINAL_current_best.html"
 
-CANDIDATE_MODELS = ["SWAN_V3", "SWAN_V3_TUNE", "SWAN_V3_TUNE_R2"]
+CANDIDATE_MODELS = ["SWAN_V3", "SWAN_V3_TUNE", "SWAN_V3_TUNE_R2", "SWAN_V3_TUNE_R3"]
 METRIC_NAME = "mse_norm"
 HORIZON_PAT = re.compile(r'"horizon"\s*:\s*(\d+)')
 
@@ -68,7 +68,7 @@ def scan_best_candidate_records():
             if not model_dir.is_dir():
                 continue
 
-            if model == "SWAN_V3_TUNE_R2":
+            if model in {"SWAN_V3_TUNE_R2", "SWAN_V3_TUNE_R3"}:
                 files = sorted(model_dir.glob("**/test_report*.csv"), key=lambda p: p.stat().st_mtime)
             else:
                 files = sorted(model_dir.glob("test_report*.csv"), key=lambda p: p.stat().st_mtime)
@@ -300,7 +300,7 @@ def build_html(rows):
 </head>
 <body>
   <h1>DAG vs SWAN_V3_FINAL 当前最优结果对比</h1>
-  <div class=\"note\">当前最优结果来源：SWAN_V3 / SWAN_V3_TUNE / SWAN_V3_TUNE_R2 中每个 dataset-horizon 的最小 mse_norm；最后一列为 SWAN_V3_FINAL.sh 对应参数配置。</div>
+  <div class="note">当前最优结果来源：SWAN_V3 / SWAN_V3_TUNE / SWAN_V3_TUNE_R2 / SWAN_V3_TUNE_R3 中每个 dataset-horizon 的最小 mse_norm；最后一列为 SWAN_V3_FINAL.sh 对应参数配置。</div>
   <div class=\"summary\">总行数：{len(rows)}（仅展示 DAG 与当前最优都有结果的公共点）。</div>
   <section>
     <table>
