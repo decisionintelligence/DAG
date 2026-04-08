@@ -1,0 +1,7 @@
+dataset,horizon,DAG_mse,R1_mse,R2_best_mse,R2_best_case,R2_vs_R1_delta,R2_vs_DAG_delta,status
+Colbun,30,0.1804,0.2890,0.2717,Colbun_h30_A,-0.0173,0.0913,still_worse_than_DAG
+NP,360,0.5264,0.6636,0.6065,NP_h360_C,-0.0571,0.0801,still_worse_than_DAG
+Energy,360,0.1691,0.2052,0.1945,Energy_h360_A,-0.0107,0.0254,still_worse_than_DAG
+Weather,96,0.0010,0.0012,0.0007,Weather_h96_C,-0.0005,-0.0003,better_than_DAG
+Weather,336,0.0015,0.0017,0.0013,Weather_h336_C,-0.0004,-0.0002,better_than_DAG
+Electricity,192,0.1559,0.1852,,N/A,,,
