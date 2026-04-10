@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -e
+
+echo "=== SWAN_V3 maize_NL_NL11_daily_targets_only FINAL started ==="
+
+# 数据文件：dataset/forecasting/maize_NL_NL11_daily_otb_targets_only.csv
+# OTB 顺序为 ssm -> rsm，因此 target_channel=-1 对应 rsm
+# FINAL 组合：
+# - h12: 使用 BASE 最优参数
+# - h24: 使用 TUNE_R1 中最优组（maize_h24_A）
+# - h48: 使用 BASE 最优参数
+
+# h12 (BEST from BASE)
+python ./scripts/run_benchmark.py --config-path "rolling_forecast_config.json" --data-name-list "maize_NL_NL11_daily_otb_targets_only.csv" --strategy-args '{"horizon": 12, "target_channel": [-1]}' --model-name "swan_v3.SWANV3" --model-hyper-params '{"adaptive_alpha": true, "alpha": 0.6, "alpha_hidden": 16, "batch_size": 64, "d_ff": 256, "d_model": 64, "density_lambda": 0.04, "dropout": 0.0, "dynamic_sparse": true, "e_layers": 1, "freq_use_phase": true, "horizon": 12, "loss": "MAE", "lr": 0.0003, "lradj": "type3", "n_heads": 4, "norm": true, "num_epochs": 120, "patch_len": 8, "patience": 15, "phase_weight": 0.2, "seq_len": 96, "sparse_beta_max": 1.0, "sparse_beta_min": 0.2, "sparse_plateau_patience": 100, "sparse_step_down": 0.02, "sparse_step_up": 0.05, "sparse_warmup_steps": 500, "stride": 8, "target_mask_density": 0.55, "use_c": 1, "use_c_exog": 1, "use_t": 1, "use_t_exog": 1, "weight_gate_floor": 0.03, "weight_gate_sharpness": 8.0}' --gpus 0 --num-workers 1 --timeout 60000 --save-path "maize_NL_NL11_daily_otb_targets_only/SWAN_V3_FINAL"
+
+# h24 (BEST from TUNE_R1: maize_h24_A)
+python ./scripts/run_benchmark.py --config-path "rolling_forecast_config.json" --data-name-list "maize_NL_NL11_daily_otb_targets_only.csv" --strategy-args '{"horizon": 24, "target_channel": [-1]}' --model-name "swan_v3.SWANV3" --model-hyper-params '{"adaptive_alpha": true, "alpha": 0.6, "alpha_hidden": 16, "batch_size": 64, "d_ff": 256, "d_model": 64, "density_lambda": 0.03, "dropout": 0.0, "dynamic_sparse": true, "e_layers": 1, "freq_use_phase": true, "horizon": 24, "loss": "MAE", "lr": 0.00025, "lradj": "type3", "n_heads": 4, "norm": true, "num_epochs": 140, "patch_len": 12, "patience": 20, "phase_weight": 0.25, "seq_len": 192, "sparse_beta_max": 1.0, "sparse_beta_min": 0.2, "sparse_plateau_patience": 120, "sparse_step_down": 0.02, "sparse_step_up": 0.05, "sparse_warmup_steps": 600, "stride": 6, "target_mask_density": 0.5, "use_c": 1, "use_c_exog": 1, "use_t": 1, "use_t_exog": 1, "weight_gate_floor": 0.03, "weight_gate_sharpness": 8.0}' --gpus 0 --num-workers 1 --timeout 60000 --save-path "maize_NL_NL11_daily_otb_targets_only/SWAN_V3_FINAL"
+
+# h48 (BEST from BASE)
+python ./scripts/run_benchmark.py --config-path "rolling_forecast_config.json" --data-name-list "maize_NL_NL11_daily_otb_targets_only.csv" --strategy-args '{"horizon": 48, "target_channel": [-1]}' --model-name "swan_v3.SWANV3" --model-hyper-params '{"adaptive_alpha": true, "alpha": 0.6, "alpha_hidden": 16, "batch_size": 64, "d_ff": 256, "d_model": 64, "density_lambda": 0.04, "dropout": 0.0, "dynamic_sparse": true, "e_layers": 1, "freq_use_phase": true, "horizon": 48, "loss": "MAE", "lr": 0.0003, "lradj": "type3", "n_heads": 4, "norm": true, "num_epochs": 120, "patch_len": 8, "patience": 15, "phase_weight": 0.2, "seq_len": 384, "sparse_beta_max": 1.0, "sparse_beta_min": 0.2, "sparse_plateau_patience": 100, "sparse_step_down": 0.02, "sparse_step_up": 0.05, "sparse_warmup_steps": 500, "stride": 8, "target_mask_density": 0.55, "use_c": 1, "use_c_exog": 1, "use_t": 1, "use_t_exog": 1, "weight_gate_floor": 0.03, "weight_gate_sharpness": 8.0}' --gpus 0 --num-workers 1 --timeout 60000 --save-path "maize_NL_NL11_daily_otb_targets_only/SWAN_V3_FINAL"
+
+echo "=== SWAN_V3 maize_NL_NL11_daily_targets_only FINAL finished ==="
