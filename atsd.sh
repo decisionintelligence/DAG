@@ -1,5 +1,5 @@
 #!/bin/bash
-CMD="sh ./scripts/covariate_forecasting/SWAN_V3_TUNE_R2.sh"  # 这里填入你启动模型训练时的命令，比如这里我用python run.py指令启动模型
+CMD="sh ./scripts/covariate_forecasting/SWAN_V3_TUNE_R6.sh"  # 这里填入你启动模型训练时的命令，比如这里我用python run.py指令启动模型
  
  # 判断当前指令是不是在跑
 if ! pgrep -f "$CMD" > /dev/null; then
