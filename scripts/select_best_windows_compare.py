@@ -30,6 +30,13 @@ def decode_blob(blob: str) -> Any:
 def to_window_list(decoded_obj: Any) -> List[Any]:
     if isinstance(decoded_obj, list):
         return decoded_obj
+
+    if isinstance(decoded_obj, np.ndarray):
+        arr = decoded_obj
+        if arr.ndim == 3:
+            return [arr[i] for i in range(arr.shape[0])]
+        return [arr]
+
     return [decoded_obj]
 
 
