@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+set -e
+
+echo "=== SWAN_V3 Agriculture TUNE R3 started ==="
+
+# R3 目标：
+# 1) 锁住 h24 最优（R2 h24_D）并做小范围稳健验证
+# 2) 重点提升 h12/h48 的 mse_norm（当前仍弱于 DAG）
+# 3) 在 h12/h48 引入更长 patch（24/48）以验证更强季节锚点
+
+# -----------------
+# h=24（巩固最优）
+# -----------------
+# h24-A: R2 最优复现（当前主力）
+python ./scripts/run_benchmark.py --config-path "rolling_forecast_config.json" --data-name-list Agriculture_OTB.csv --strategy-args '{"horizon": 24, "target_channel": [-1]}' --model-name "swan_v3.SWANV3" --model-hyper-params '{"adaptive_alpha": true, "alpha": 0.6, "alpha_hidden": 16, "batch_size": 64, "d_ff": 256, "d_model": 64, "density_lambda": 0.04, "dropout": 0.0, "dynamic_sparse": true, "e_layers": 1, "freq_use_phase": true, "horizon": 24, "loss": "MAE", "lr": 0.0003, "lradj": "type3", "n_heads": 4, "norm": true, "num_epochs": 120, "patch_len": 8, "patience": 15, "phase_weight": 0.2, "seq_len": 168, "sparse_beta_max": 1.0, "sparse_beta_min": 0.2, "sparse_plateau_patience": 100, "sparse_step_down": 0.02, "sparse_step_up": 0.05, "sparse_warmup_steps": 500, "stride": 8, "target_mask_density": 0.55, "use_c": 1, "use_c_exog": 1, "use_t": 1, "use_t_exog": 1, "weight_gate_floor": 0.03, "weight_gate_sharpness": 8.0}' --gpus 0 --num-workers 1 --timeout 60000 --save-path Agriculture_OTB/SWAN_V3_TUNE_R3/Agriculture_h24_A
+
+# h24-B: 降低稀疏惩罚，验证稳健性
+python ./scripts/run_benchmark.py --config-path "rolling_forecast_config.json" --data-name-list Agriculture_OTB.csv --strategy-args '{"horizon": 24, "target_channel": [-1]}' --model-name "swan_v3.SWANV3" --model-hyper-params '{"adaptive_alpha": true, "alpha": 0.6, "alpha_hidden": 16, "batch_size": 64, "d_ff": 256, "d_model": 64, "density_lambda": 0.03, "dropout": 0.0, "dynamic_sparse": true, "e_layers": 1, "freq_use_phase": true, "horizon": 24, "loss": "MAE", "lr": 0.0003, "lradj": "type3", "n_heads": 4, "norm": true, "num_epochs": 120, "patch_len": 8, "patience": 15, "phase_weight": 0.2, "seq_len": 168, "sparse_beta_max": 1.0, "sparse_beta_min": 0.2, "sparse_plateau_patience": 100, "sparse_step_down": 0.02, "sparse_step_up": 0.05, "sparse_warmup_steps": 500, "stride": 8, "target_mask_density": 0.55, "use_c": 1, "use_c_exog": 1, "use_t": 1, "use_t_exog": 1, "weight_gate_floor": 0.03, "weight_gate_sharpness": 8.0}' --gpus 0 --num-workers 1 --timeout 60000 --save-path Agriculture_OTB/SWAN_V3_TUNE_R3/Agriculture_h24_B
+
+# -----------------
+# h=12（修复短期）
+# -----------------
+# h12-A: R2 最优复现（当前 h12 主力）
+python ./scripts/run_benchmark.py --config-path "rolling_forecast_config.json" --data-name-list Agriculture_OTB.csv --strategy-args '{"horizon": 12, "target_channel": [-1]}' --model-name "swan_v3.SWANV3" --model-hyper-params '{"adaptive_alpha": true, "alpha": 0.6, "alpha_hidden": 16, "batch_size": 64, "d_ff": 256, "d_model": 64, "density_lambda": 0.04, "dropout": 0.0, "dynamic_sparse": true, "e_layers": 1, "freq_use_phase": true, "horizon": 12, "loss": "MAE", "lr": 0.0003, "lradj": "type3", "n_heads": 4, "norm": true, "num_epochs": 120, "patch_len": 8, "patience": 15, "phase_weight": 0.2, "seq_len": 72, "sparse_beta_max": 1.0, "sparse_beta_min": 0.2, "sparse_plateau_patience": 100, "sparse_step_down": 0.02, "sparse_step_up": 0.05, "sparse_warmup_steps": 500, "stride": 8, "target_mask_density": 0.5, "use_c": 1, "use_c_exog": 1, "use_t": 1, "use_t_exog": 1, "weight_gate_floor": 0.03, "weight_gate_sharpness": 8.0}' --gpus 0 --num-workers 1 --timeout 60000 --save-path Agriculture_OTB/SWAN_V3_TUNE_R3/Agriculture_h12_A
+
+# h12-B: 中等 patch 季节锚点（24）
+python ./scripts/run_benchmark.py --config-path "rolling_forecast_config.json" --data-name-list Agriculture_OTB.csv --strategy-args '{"horizon": 12, "target_channel": [-1]}' --model-name "swan_v3.SWANV3" --model-hyper-params '{"adaptive_alpha": true, "alpha": 0.6, "alpha_hidden": 16, "batch_size": 64, "d_ff": 256, "d_model": 64, "density_lambda": 0.03, "dropout": 0.0, "dynamic_sparse": false, "e_layers": 1, "freq_use_phase": true, "horizon": 12, "loss": "MAE", "lr": 0.0001, "lradj": "type3", "n_heads": 4, "norm": true, "num_epochs": 140, "patch_len": 24, "patience": 18, "phase_weight": 0.18, "seq_len": 96, "sparse_beta_max": 1.0, "sparse_beta_min": 0.2, "sparse_plateau_patience": 100, "sparse_step_down": 0.02, "sparse_step_up": 0.05, "sparse_warmup_steps": 600, "stride": 24, "target_mask_density": 0.6, "use_c": 1, "use_c_exog": 1, "use_t": 1, "use_t_exog": 1, "weight_gate_floor": 0.03, "weight_gate_sharpness": 8.0}' --gpus 0 --num-workers 1 --timeout 60000 --save-path Agriculture_OTB/SWAN_V3_TUNE_R3/Agriculture_h12_B
+
+# h12-C: DAG 风格长 patch（48）
+python ./scripts/run_benchmark.py --config-path "rolling_forecast_config.json" --data-name-list Agriculture_OTB.csv --strategy-args '{"horizon": 12, "target_channel": [-1]}' --model-name "swan_v3.SWANV3" --model-hyper-params '{"adaptive_alpha": true, "alpha": 0.6, "alpha_hidden": 16, "batch_size": 64, "d_ff": 256, "d_model": 64, "density_lambda": 0.03, "dropout": 0.0, "dynamic_sparse": false, "e_layers": 1, "freq_use_phase": true, "horizon": 12, "loss": "MAE", "lr": 0.0001, "lradj": "type3", "n_heads": 4, "norm": true, "num_epochs": 140, "patch_len": 48, "patience": 18, "phase_weight": 0.18, "seq_len": 96, "sparse_beta_max": 1.0, "sparse_beta_min": 0.2, "sparse_plateau_patience": 100, "sparse_step_down": 0.02, "sparse_step_up": 0.05, "sparse_warmup_steps": 600, "stride": 48, "target_mask_density": 0.6, "use_c": 1, "use_c_exog": 1, "use_t": 1, "use_t_exog": 1, "weight_gate_floor": 0.03, "weight_gate_sharpness": 8.0}' --gpus 0 --num-workers 1 --timeout 60000 --save-path Agriculture_OTB/SWAN_V3_TUNE_R3/Agriculture_h12_C
+
+# -----------------
+# h=48（追赶 DAG）
+# -----------------
+# h48-A: R2 最优 mse 复现（patch=8）
+python ./scripts/run_benchmark.py --config-path "rolling_forecast_config.json" --data-name-list Agriculture_OTB.csv --strategy-args '{"horizon": 48, "target_channel": [-1]}' --model-name "swan_v3.SWANV3" --model-hyper-params '{"adaptive_alpha": true, "alpha": 0.6, "alpha_hidden": 16, "batch_size": 64, "d_ff": 256, "d_model": 64, "density_lambda": 0.04, "dropout": 0.0, "dynamic_sparse": true, "e_layers": 1, "freq_use_phase": true, "horizon": 48, "loss": "MAE", "lr": 0.0003, "lradj": "type3", "n_heads": 4, "norm": true, "num_epochs": 120, "patch_len": 8, "patience": 15, "phase_weight": 0.2, "seq_len": 384, "sparse_beta_max": 1.0, "sparse_beta_min": 0.2, "sparse_plateau_patience": 100, "sparse_step_down": 0.02, "sparse_step_up": 0.05, "sparse_warmup_steps": 500, "stride": 8, "target_mask_density": 0.55, "use_c": 1, "use_c_exog": 1, "use_t": 1, "use_t_exog": 1, "weight_gate_floor": 0.03, "weight_gate_sharpness": 8.0}' --gpus 0 --num-workers 1 --timeout 60000 --save-path Agriculture_OTB/SWAN_V3_TUNE_R3/Agriculture_h48_A
+
+# h48-B: 中等 patch（24）
+python ./scripts/run_benchmark.py --config-path "rolling_forecast_config.json" --data-name-list Agriculture_OTB.csv --strategy-args '{"horizon": 48, "target_channel": [-1]}' --model-name "swan_v3.SWANV3" --model-hyper-params '{"adaptive_alpha": true, "alpha": 0.6, "alpha_hidden": 16, "batch_size": 64, "d_ff": 256, "d_model": 64, "density_lambda": 0.03, "dropout": 0.0, "dynamic_sparse": false, "e_layers": 1, "freq_use_phase": true, "horizon": 48, "loss": "MAE", "lr": 0.0001, "lradj": "type3", "n_heads": 4, "norm": true, "num_epochs": 140, "patch_len": 24, "patience": 18, "phase_weight": 0.18, "seq_len": 336, "sparse_beta_max": 1.0, "sparse_beta_min": 0.2, "sparse_plateau_patience": 100, "sparse_step_down": 0.02, "sparse_step_up": 0.05, "sparse_warmup_steps": 600, "stride": 24, "target_mask_density": 0.6, "use_c": 1, "use_c_exog": 1, "use_t": 1, "use_t_exog": 1, "weight_gate_floor": 0.03, "weight_gate_sharpness": 8.0}' --gpus 0 --num-workers 1 --timeout 60000 --save-path Agriculture_OTB/SWAN_V3_TUNE_R3/Agriculture_h48_B
+
+# h48-C: DAG 风格长 patch（48）
+python ./scripts/run_benchmark.py --config-path "rolling_forecast_config.json" --data-name-list Agriculture_OTB.csv --strategy-args '{"horizon": 48, "target_channel": [-1]}' --model-name "swan_v3.SWANV3" --model-hyper-params '{"adaptive_alpha": true, "alpha": 0.6, "alpha_hidden": 16, "batch_size": 64, "d_ff": 256, "d_model": 64, "density_lambda": 0.03, "dropout": 0.0, "dynamic_sparse": false, "e_layers": 1, "freq_use_phase": true, "horizon": 48, "loss": "MAE", "lr": 0.0001, "lradj": "type3", "n_heads": 4, "norm": true, "num_epochs": 140, "patch_len": 48, "patience": 18, "phase_weight": 0.18, "seq_len": 336, "sparse_beta_max": 1.0, "sparse_beta_min": 0.2, "sparse_plateau_patience": 100, "sparse_step_down": 0.02, "sparse_step_up": 0.05, "sparse_warmup_steps": 600, "stride": 48, "target_mask_density": 0.6, "use_c": 1, "use_c_exog": 1, "use_t": 1, "use_t_exog": 1, "weight_gate_floor": 0.03, "weight_gate_sharpness": 8.0}' --gpus 0 --num-workers 1 --timeout 60000 --save-path Agriculture_OTB/SWAN_V3_TUNE_R3/Agriculture_h48_C
+
+echo "=== SWAN_V3 Agriculture TUNE R3 finished ==="

@@ -1,0 +1,221 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2200" height="1300">
+<rect width="100%" height="100%" fill="white"/>
+<text x="30" y="40" font-size="26" font-family="Arial" fill="#222">DAG vs SWAN vs SWAN_V3 结果对比图（公共结果点）</text>
+<text x="30" y="68" font-size="16" font-family="Arial" fill="#555">上图：各指标最优次数；下图：按 dataset-horizon 的 mse_norm 柱状对比（越低越好）</text>
+<line x1="90" y1="360" x2="2160" y2="360" stroke="#888"/>
+<line x1="90" y1="80" x2="90" y2="360" stroke="#888"/>
+<text x="230" y="388" font-size="16" font-family="Arial">mse_norm</text>
+<rect x="210" y="120" width="70" height="240" fill="#1f77b4"/>
+<text x="234" y="114" font-size="14" font-family="Arial">17</text>
+<rect x="306" y="177" width="70" height="183" fill="#2ca02c"/>
+<text x="330" y="171" font-size="14" font-family="Arial">13</text>
+<rect x="402" y="135" width="70" height="225" fill="#d62728"/>
+<text x="426" y="129" font-size="14" font-family="Arial">16</text>
+<text x="750" y="388" font-size="16" font-family="Arial">mae_norm</text>
+<rect x="730" y="120" width="70" height="240" fill="#1f77b4"/>
+<text x="754" y="114" font-size="14" font-family="Arial">17</text>
+<rect x="826" y="177" width="70" height="183" fill="#2ca02c"/>
+<text x="850" y="171" font-size="14" font-family="Arial">13</text>
+<rect x="922" y="135" width="70" height="225" fill="#d62728"/>
+<text x="946" y="129" font-size="14" font-family="Arial">16</text>
+<text x="1270" y="388" font-size="16" font-family="Arial">rmse_norm</text>
+<rect x="1250" y="149" width="70" height="211" fill="#1f77b4"/>
+<text x="1274" y="143" font-size="14" font-family="Arial">15</text>
+<rect x="1346" y="163" width="70" height="197" fill="#2ca02c"/>
+<text x="1370" y="157" font-size="14" font-family="Arial">14</text>
+<rect x="1442" y="120" width="70" height="240" fill="#d62728"/>
+<text x="1466" y="114" font-size="14" font-family="Arial">17</text>
+<rect x="1840" y="88" width="14" height="14" fill="#1f77b4"/>
+<text x="1862" y="100" font-size="14" font-family="Arial">DAG</text>
+<rect x="1840" y="112" width="14" height="14" fill="#2ca02c"/>
+<text x="1862" y="124" font-size="14" font-family="Arial">SWAN</text>
+<rect x="1840" y="136" width="14" height="14" fill="#d62728"/>
+<text x="1862" y="148" font-size="14" font-family="Arial">SWAN_V3</text>
+<line x1="90" y1="1200" x2="2160" y2="1200" stroke="#888"/>
+<line x1="90" y1="460" x2="90" y2="1200" stroke="#888"/>
+<rect x="110.00" y="831" width="11.03" height="369" fill="#1f77b4" opacity="0.9"/>
+<rect x="121.03" y="826" width="11.03" height="374" fill="#2ca02c" opacity="0.9"/>
+<rect x="132.07" y="827" width="11.03" height="373" fill="#d62728" opacity="0.9"/>
+<text x="121.03" y="1218" font-size="10" font-family="Arial" transform="rotate(60 121.03,1218)">BE-h24</text>
+<rect x="154.13" y="704" width="11.03" height="496" fill="#1f77b4" opacity="0.9"/>
+<rect x="165.16" y="693" width="11.03" height="507" fill="#2ca02c" opacity="0.9"/>
+<rect x="176.20" y="675" width="11.03" height="525" fill="#d62728" opacity="0.9"/>
+<text x="165.16" y="1218" font-size="10" font-family="Arial" transform="rotate(60 165.16,1218)">BE-h360</text>
+<rect x="198.26" y="1140" width="11.03" height="60" fill="#1f77b4" opacity="0.9"/>
+<rect x="209.29" y="1135" width="11.03" height="65" fill="#2ca02c" opacity="0.9"/>
+<rect x="220.33" y="1143" width="11.03" height="57" fill="#d62728" opacity="0.9"/>
+<text x="209.29" y="1218" font-size="10" font-family="Arial" transform="rotate(60 209.29,1218)">Colbun-h10</text>
+<rect x="242.39" y="1016" width="11.03" height="184" fill="#1f77b4" opacity="0.9"/>
+<rect x="253.42" y="1036" width="11.03" height="164" fill="#2ca02c" opacity="0.9"/>
+<rect x="264.46" y="939" width="11.03" height="261" fill="#d62728" opacity="0.9"/>
+<text x="253.42" y="1218" font-size="10" font-family="Arial" transform="rotate(60 253.42,1218)">Colbun-h30</text>
+<rect x="286.52" y="912" width="11.03" height="288" fill="#1f77b4" opacity="0.9"/>
+<rect x="297.55" y="894" width="11.03" height="306" fill="#2ca02c" opacity="0.9"/>
+<rect x="308.59" y="905" width="11.03" height="295" fill="#d62728" opacity="0.9"/>
+<text x="297.55" y="1218" font-size="10" font-family="Arial" transform="rotate(60 297.55,1218)">DE-h24</text>
+<rect x="330.65" y="729" width="11.03" height="471" fill="#1f77b4" opacity="0.9"/>
+<rect x="341.68" y="721" width="11.03" height="479" fill="#2ca02c" opacity="0.9"/>
+<rect x="352.72" y="725" width="11.03" height="475" fill="#d62728" opacity="0.9"/>
+<text x="341.68" y="1218" font-size="10" font-family="Arial" transform="rotate(60 341.68,1218)">DE-h360</text>
+<rect x="374.78" y="1114" width="11.03" height="86" fill="#1f77b4" opacity="0.9"/>
+<rect x="385.82" y="1096" width="11.03" height="104" fill="#2ca02c" opacity="0.9"/>
+<rect x="396.85" y="1110" width="11.03" height="90" fill="#d62728" opacity="0.9"/>
+<text x="385.82" y="1218" font-size="10" font-family="Arial" transform="rotate(60 385.82,1218)">ETTh1-h96</text>
+<rect x="418.91" y="1050" width="11.03" height="150" fill="#1f77b4" opacity="0.9"/>
+<rect x="429.95" y="1059" width="11.03" height="141" fill="#2ca02c" opacity="0.9"/>
+<rect x="440.98" y="1092" width="11.03" height="108" fill="#d62728" opacity="0.9"/>
+<text x="429.95" y="1218" font-size="10" font-family="Arial" transform="rotate(60 429.95,1218)">ETTh1-h192</text>
+<rect x="463.04" y="1074" width="11.03" height="126" fill="#1f77b4" opacity="0.9"/>
+<rect x="474.08" y="1062" width="11.03" height="138" fill="#2ca02c" opacity="0.9"/>
+<rect x="485.11" y="1080" width="11.03" height="120" fill="#d62728" opacity="0.9"/>
+<text x="474.08" y="1218" font-size="10" font-family="Arial" transform="rotate(60 474.08,1218)">ETTh1-h336</text>
+<rect x="507.17" y="1013" width="11.03" height="187" fill="#1f77b4" opacity="0.9"/>
+<rect x="518.21" y="1054" width="11.03" height="146" fill="#2ca02c" opacity="0.9"/>
+<rect x="529.24" y="1069" width="11.03" height="131" fill="#d62728" opacity="0.9"/>
+<text x="518.21" y="1218" font-size="10" font-family="Arial" transform="rotate(60 518.21,1218)">ETTh1-h720</text>
+<rect x="551.30" y="948" width="11.03" height="252" fill="#1f77b4" opacity="0.9"/>
+<rect x="562.34" y="956" width="11.03" height="244" fill="#2ca02c" opacity="0.9"/>
+<rect x="573.37" y="964" width="11.03" height="236" fill="#d62728" opacity="0.9"/>
+<text x="562.34" y="1218" font-size="10" font-family="Arial" transform="rotate(60 562.34,1218)">ETTh2-h96</text>
+<rect x="595.43" y="913" width="11.03" height="287" fill="#1f77b4" opacity="0.9"/>
+<rect x="606.47" y="905" width="11.03" height="295" fill="#2ca02c" opacity="0.9"/>
+<rect x="617.50" y="940" width="11.03" height="260" fill="#d62728" opacity="0.9"/>
+<text x="606.47" y="1218" font-size="10" font-family="Arial" transform="rotate(60 606.47,1218)">ETTh2-h192</text>
+<rect x="639.57" y="869" width="11.03" height="331" fill="#1f77b4" opacity="0.9"/>
+<rect x="650.60" y="861" width="11.03" height="339" fill="#2ca02c" opacity="0.9"/>
+<rect x="661.63" y="885" width="11.03" height="315" fill="#d62728" opacity="0.9"/>
+<text x="650.60" y="1218" font-size="10" font-family="Arial" transform="rotate(60 650.60,1218)">ETTh2-h336</text>
+<rect x="683.70" y="739" width="11.03" height="461" fill="#1f77b4" opacity="0.9"/>
+<rect x="694.73" y="715" width="11.03" height="485" fill="#2ca02c" opacity="0.9"/>
+<rect x="705.76" y="623" width="11.03" height="577" fill="#d62728" opacity="0.9"/>
+<text x="694.73" y="1218" font-size="10" font-family="Arial" transform="rotate(60 694.73,1218)">ETTh2-h720</text>
+<rect x="727.83" y="1155" width="11.03" height="45" fill="#1f77b4" opacity="0.9"/>
+<rect x="738.86" y="1155" width="11.03" height="45" fill="#2ca02c" opacity="0.9"/>
+<rect x="749.89" y="1157" width="11.03" height="43" fill="#d62728" opacity="0.9"/>
+<text x="738.86" y="1218" font-size="10" font-family="Arial" transform="rotate(60 738.86,1218)">ETTm1-h96</text>
+<rect x="771.96" y="1127" width="11.03" height="73" fill="#1f77b4" opacity="0.9"/>
+<rect x="782.99" y="1126" width="11.03" height="74" fill="#2ca02c" opacity="0.9"/>
+<rect x="794.02" y="1130" width="11.03" height="70" fill="#d62728" opacity="0.9"/>
+<text x="782.99" y="1218" font-size="10" font-family="Arial" transform="rotate(60 782.99,1218)">ETTm1-h192</text>
+<rect x="816.09" y="1093" width="11.03" height="107" fill="#1f77b4" opacity="0.9"/>
+<rect x="827.12" y="1092" width="11.03" height="108" fill="#2ca02c" opacity="0.9"/>
+<rect x="838.15" y="1107" width="11.03" height="93" fill="#d62728" opacity="0.9"/>
+<text x="827.12" y="1218" font-size="10" font-family="Arial" transform="rotate(60 827.12,1218)">ETTm1-h336</text>
+<rect x="860.22" y="1048" width="11.03" height="152" fill="#1f77b4" opacity="0.9"/>
+<rect x="871.25" y="1048" width="11.03" height="152" fill="#2ca02c" opacity="0.9"/>
+<rect x="882.28" y="1068" width="11.03" height="132" fill="#d62728" opacity="0.9"/>
+<text x="871.25" y="1218" font-size="10" font-family="Arial" transform="rotate(60 871.25,1218)">ETTm1-h720</text>
+<rect x="904.35" y="1091" width="11.03" height="109" fill="#1f77b4" opacity="0.9"/>
+<rect x="915.38" y="1094" width="11.03" height="106" fill="#2ca02c" opacity="0.9"/>
+<rect x="926.41" y="1089" width="11.03" height="111" fill="#d62728" opacity="0.9"/>
+<text x="915.38" y="1218" font-size="10" font-family="Arial" transform="rotate(60 915.38,1218)">ETTm2-h96</text>
+<rect x="948.48" y="1028" width="11.03" height="172" fill="#1f77b4" opacity="0.9"/>
+<rect x="959.51" y="1028" width="11.03" height="172" fill="#2ca02c" opacity="0.9"/>
+<rect x="970.54" y="1029" width="11.03" height="171" fill="#d62728" opacity="0.9"/>
+<text x="959.51" y="1218" font-size="10" font-family="Arial" transform="rotate(60 959.51,1218)">ETTm2-h192</text>
+<rect x="992.61" y="946" width="11.03" height="254" fill="#1f77b4" opacity="0.9"/>
+<rect x="1003.64" y="950" width="11.03" height="250" fill="#2ca02c" opacity="0.9"/>
+<rect x="1014.67" y="950" width="11.03" height="250" fill="#d62728" opacity="0.9"/>
+<text x="1003.64" y="1218" font-size="10" font-family="Arial" transform="rotate(60 1003.64,1218)">ETTm2-h336</text>
+<rect x="1036.74" y="853" width="11.03" height="347" fill="#1f77b4" opacity="0.9"/>
+<rect x="1047.77" y="856" width="11.03" height="344" fill="#2ca02c" opacity="0.9"/>
+<rect x="1058.80" y="837" width="11.03" height="363" fill="#d62728" opacity="0.9"/>
+<text x="1047.77" y="1218" font-size="10" font-family="Arial" transform="rotate(60 1047.77,1218)">ETTm2-h720</text>
+<rect x="1080.87" y="1037" width="11.03" height="163" fill="#1f77b4" opacity="0.9"/>
+<rect x="1091.90" y="1057" width="11.03" height="143" fill="#2ca02c" opacity="0.9"/>
+<rect x="1102.93" y="1063" width="11.03" height="137" fill="#d62728" opacity="0.9"/>
+<text x="1091.90" y="1218" font-size="10" font-family="Arial" transform="rotate(60 1091.90,1218)">Electricity-h96</text>
+<rect x="1125.00" y="1041" width="11.03" height="159" fill="#1f77b4" opacity="0.9"/>
+<rect x="1136.03" y="1043" width="11.03" height="157" fill="#2ca02c" opacity="0.9"/>
+<rect x="1147.07" y="1014" width="11.03" height="186" fill="#d62728" opacity="0.9"/>
+<text x="1136.03" y="1218" font-size="10" font-family="Arial" transform="rotate(60 1136.03,1218)">Electricity-h192</text>
+<rect x="1169.13" y="1120" width="11.03" height="80" fill="#1f77b4" opacity="0.9"/>
+<rect x="1180.16" y="1108" width="11.03" height="92" fill="#2ca02c" opacity="0.9"/>
+<rect x="1191.20" y="1106" width="11.03" height="94" fill="#d62728" opacity="0.9"/>
+<text x="1180.16" y="1218" font-size="10" font-family="Arial" transform="rotate(60 1180.16,1218)">Energy-h24</text>
+<rect x="1213.26" y="1028" width="11.03" height="172" fill="#1f77b4" opacity="0.9"/>
+<rect x="1224.29" y="971" width="11.03" height="229" fill="#2ca02c" opacity="0.9"/>
+<rect x="1235.33" y="989" width="11.03" height="211" fill="#d62728" opacity="0.9"/>
+<text x="1224.29" y="1218" font-size="10" font-family="Arial" transform="rotate(60 1224.29,1218)">Energy-h360</text>
+<rect x="1257.39" y="837" width="11.03" height="363" fill="#1f77b4" opacity="0.9"/>
+<rect x="1268.42" y="835" width="11.03" height="365" fill="#2ca02c" opacity="0.9"/>
+<rect x="1279.46" y="835" width="11.03" height="365" fill="#d62728" opacity="0.9"/>
+<text x="1268.42" y="1218" font-size="10" font-family="Arial" transform="rotate(60 1268.42,1218)">FR-h24</text>
+<rect x="1301.52" y="719" width="11.03" height="481" fill="#1f77b4" opacity="0.9"/>
+<rect x="1312.55" y="724" width="11.03" height="476" fill="#2ca02c" opacity="0.9"/>
+<rect x="1323.59" y="716" width="11.03" height="484" fill="#d62728" opacity="0.9"/>
+<text x="1312.55" y="1218" font-size="10" font-family="Arial" transform="rotate(60 1312.55,1218)">FR-h360</text>
+<rect x="1345.65" y="993" width="11.03" height="207" fill="#1f77b4" opacity="0.9"/>
+<rect x="1356.68" y="986" width="11.03" height="214" fill="#2ca02c" opacity="0.9"/>
+<rect x="1367.72" y="991" width="11.03" height="209" fill="#d62728" opacity="0.9"/>
+<text x="1356.68" y="1218" font-size="10" font-family="Arial" transform="rotate(60 1356.68,1218)">NP-h24</text>
+<rect x="1389.78" y="662" width="11.03" height="538" fill="#1f77b4" opacity="0.9"/>
+<rect x="1400.82" y="621" width="11.03" height="579" fill="#2ca02c" opacity="0.9"/>
+<rect x="1411.85" y="510" width="11.03" height="690" fill="#d62728" opacity="0.9"/>
+<text x="1400.82" y="1218" font-size="10" font-family="Arial" transform="rotate(60 1400.82,1218)">NP-h360</text>
+<rect x="1433.91" y="1142" width="11.03" height="58" fill="#1f77b4" opacity="0.9"/>
+<rect x="1444.95" y="1142" width="11.03" height="58" fill="#2ca02c" opacity="0.9"/>
+<rect x="1455.98" y="1142" width="11.03" height="58" fill="#d62728" opacity="0.9"/>
+<text x="1444.95" y="1218" font-size="10" font-family="Arial" transform="rotate(60 1444.95,1218)">PJM-h24</text>
+<rect x="1478.04" y="1068" width="11.03" height="132" fill="#1f77b4" opacity="0.9"/>
+<rect x="1489.08" y="1069" width="11.03" height="131" fill="#2ca02c" opacity="0.9"/>
+<rect x="1500.11" y="1065" width="11.03" height="135" fill="#d62728" opacity="0.9"/>
+<text x="1489.08" y="1218" font-size="10" font-family="Arial" transform="rotate(60 1489.08,1218)">PJM-h360</text>
+<rect x="1522.17" y="1045" width="11.03" height="155" fill="#1f77b4" opacity="0.9"/>
+<rect x="1533.21" y="1035" width="11.03" height="165" fill="#2ca02c" opacity="0.9"/>
+<rect x="1544.24" y="1042" width="11.03" height="158" fill="#d62728" opacity="0.9"/>
+<text x="1533.21" y="1218" font-size="10" font-family="Arial" transform="rotate(60 1533.21,1218)">Rapel-h10</text>
+<rect x="1566.30" y="865" width="11.03" height="335" fill="#1f77b4" opacity="0.9"/>
+<rect x="1577.34" y="868" width="11.03" height="332" fill="#2ca02c" opacity="0.9"/>
+<rect x="1588.37" y="856" width="11.03" height="344" fill="#d62728" opacity="0.9"/>
+<text x="1577.34" y="1218" font-size="10" font-family="Arial" transform="rotate(60 1577.34,1218)">Rapel-h30</text>
+<rect x="1610.43" y="786" width="11.03" height="414" fill="#1f77b4" opacity="0.9"/>
+<rect x="1621.47" y="802" width="11.03" height="398" fill="#2ca02c" opacity="0.9"/>
+<rect x="1632.50" y="790" width="11.03" height="410" fill="#d62728" opacity="0.9"/>
+<text x="1621.47" y="1218" font-size="10" font-family="Arial" transform="rotate(60 1621.47,1218)">Sdwpfh1-h24</text>
+<rect x="1654.57" y="701" width="11.03" height="499" fill="#1f77b4" opacity="0.9"/>
+<rect x="1665.60" y="581" width="11.03" height="619" fill="#2ca02c" opacity="0.9"/>
+<rect x="1676.63" y="652" width="11.03" height="548" fill="#d62728" opacity="0.9"/>
+<text x="1665.60" y="1218" font-size="10" font-family="Arial" transform="rotate(60 1665.60,1218)">Sdwpfh1-h360</text>
+<rect x="1698.70" y="740" width="11.03" height="460" fill="#1f77b4" opacity="0.9"/>
+<rect x="1709.73" y="761" width="11.03" height="439" fill="#2ca02c" opacity="0.9"/>
+<rect x="1720.76" y="733" width="11.03" height="467" fill="#d62728" opacity="0.9"/>
+<text x="1709.73" y="1218" font-size="10" font-family="Arial" transform="rotate(60 1709.73,1218)">Sdwpfh2-h24</text>
+<rect x="1742.83" y="580" width="11.03" height="620" fill="#1f77b4" opacity="0.9"/>
+<rect x="1753.86" y="565" width="11.03" height="635" fill="#2ca02c" opacity="0.9"/>
+<rect x="1764.89" y="534" width="11.03" height="666" fill="#d62728" opacity="0.9"/>
+<text x="1753.86" y="1218" font-size="10" font-family="Arial" transform="rotate(60 1753.86,1218)">Sdwpfh2-h360</text>
+<rect x="1786.96" y="848" width="11.03" height="352" fill="#1f77b4" opacity="0.9"/>
+<rect x="1797.99" y="829" width="11.03" height="371" fill="#2ca02c" opacity="0.9"/>
+<rect x="1809.02" y="820" width="11.03" height="380" fill="#d62728" opacity="0.9"/>
+<text x="1797.99" y="1218" font-size="10" font-family="Arial" transform="rotate(60 1797.99,1218)">Sdwpfm1-h24</text>
+<rect x="1831.09" y="690" width="11.03" height="510" fill="#1f77b4" opacity="0.9"/>
+<rect x="1842.12" y="667" width="11.03" height="533" fill="#2ca02c" opacity="0.9"/>
+<rect x="1853.15" y="707" width="11.03" height="493" fill="#d62728" opacity="0.9"/>
+<text x="1842.12" y="1218" font-size="10" font-family="Arial" transform="rotate(60 1842.12,1218)">Sdwpfm1-h360</text>
+<rect x="1875.22" y="820" width="11.03" height="380" fill="#1f77b4" opacity="0.9"/>
+<rect x="1886.25" y="816" width="11.03" height="384" fill="#2ca02c" opacity="0.9"/>
+<rect x="1897.28" y="793" width="11.03" height="407" fill="#d62728" opacity="0.9"/>
+<text x="1886.25" y="1218" font-size="10" font-family="Arial" transform="rotate(60 1886.25,1218)">Sdwpfm2-h24</text>
+<rect x="1919.35" y="600" width="11.03" height="600" fill="#1f77b4" opacity="0.9"/>
+<rect x="1930.38" y="612" width="11.03" height="588" fill="#2ca02c" opacity="0.9"/>
+<rect x="1941.41" y="618" width="11.03" height="582" fill="#d62728" opacity="0.9"/>
+<text x="1930.38" y="1218" font-size="10" font-family="Arial" transform="rotate(60 1930.38,1218)">Sdwpfm2-h360</text>
+<rect x="1963.48" y="1199" width="11.03" height="1" fill="#1f77b4" opacity="0.9"/>
+<rect x="1974.51" y="1199" width="11.03" height="1" fill="#2ca02c" opacity="0.9"/>
+<rect x="1985.54" y="1200" width="11.03" height="0" fill="#d62728" opacity="0.9"/>
+<text x="1974.51" y="1218" font-size="10" font-family="Arial" transform="rotate(60 1974.51,1218)">Weather-h96</text>
+<rect x="2007.61" y="1200" width="11.03" height="0" fill="#1f77b4" opacity="0.9"/>
+<rect x="2018.64" y="1199" width="11.03" height="1" fill="#2ca02c" opacity="0.9"/>
+<rect x="2029.67" y="1199" width="11.03" height="1" fill="#d62728" opacity="0.9"/>
+<text x="2018.64" y="1218" font-size="10" font-family="Arial" transform="rotate(60 2018.64,1218)">Weather-h192</text>
+<rect x="2051.74" y="1199" width="11.03" height="1" fill="#1f77b4" opacity="0.9"/>
+<rect x="2062.77" y="1199" width="11.03" height="1" fill="#2ca02c" opacity="0.9"/>
+<rect x="2073.80" y="1199" width="11.03" height="1" fill="#d62728" opacity="0.9"/>
+<text x="2062.77" y="1218" font-size="10" font-family="Arial" transform="rotate(60 2062.77,1218)">Weather-h336</text>
+<rect x="2095.87" y="1199" width="11.03" height="1" fill="#1f77b4" opacity="0.9"/>
+<rect x="2106.90" y="1199" width="11.03" height="1" fill="#2ca02c" opacity="0.9"/>
+<rect x="2117.93" y="1199" width="11.03" height="1" fill="#d62728" opacity="0.9"/>
+<text x="2106.90" y="1218" font-size="10" font-family="Arial" transform="rotate(60 2106.90,1218)">Weather-h720</text>
+<text x="90" y="446" font-size="16" font-family="Arial">mse_norm 对比（DAG/SWAN/SWAN_V3）</text>
+</svg>

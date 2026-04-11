@@ -180,7 +180,16 @@ class ModelFactory:
 
         :return: A model instance that is compatible with the :class:`ModelBase` interface.
         """
-        return self.model_factory(**self.model_hyper_params)
+        model = self.model_factory(**self.model_hyper_params)
+        model_params = self.model_hyper_params
+        get_params = getattr(model, "get_params", None)
+        if callable(get_params):
+            try:
+                model_params = get_params()
+            except Exception as e:
+                logger.info("Failed to get params from model %s: %s", self.model_name, e)
+        logger.info("Model %s loaded with parameters: %s", self.model_name, model_params)
+        return model
 
 
 def get_models(all_model_config: Dict) -> List[ModelFactory]:
