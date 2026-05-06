@@ -43,7 +43,7 @@ You can obtained the well pre-processed datasets from [Google Drive](https://dri
 - We provide all the experiment scripts for DAG and other baselines under the folder `./scripts/covariate_forecasting`.  For example you can reproduce all the experiment results as the following script:
 
 ```shell
-sh ./scripts/covariate_forecasting/DAG.sh
+sh ./scripts/w_future/DAG.sh
 ```
 
 
