@@ -1,8 +1,8 @@
 # <img src="docs/figures/icon.png" alt="Image description" style="width:27px;height:27px;"> DAG: A Dual Correlation Network for Time Series Forecasting with Exogenous Variables
 
-[![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)  [![PyTorch](https://img.shields.io/badge/PyTorch-2.4.1-blue)](https://pytorch.org/)
+ [![ICML](https://img.shields.io/badge/ICML'26-DAG-orange)](https://arxiv.org/pdf/2509.14933) [![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)  [![PyTorch](https://img.shields.io/badge/PyTorch-2.4.1-blue)](https://pytorch.org/)
 
-This code is the official PyTorch implementation of our paper, [DAG](https://arxiv.org/pdf/2509.14933): A Dual Correlation Network for Time Series Forecasting with Exogenous Variables.
+This code is the official PyTorch implementation of our ICML'26 paper, [DAG](https://arxiv.org/pdf/2509.14933): A Dual Correlation Network for Time Series Forecasting with Exogenous Variables.
 
 If you find this project helpful, please don't forget to give it a ⭐ Star to show your support. Thank you!
 
@@ -54,6 +54,21 @@ We utilize the Time Series Forecasting Benchmark (TFB) code repository as a unif
 <div align="center">
 <img alt="Logo" src="docs/figures/result1.png" width="100%"/>
 </div>
+
+## Citation
+
+If you find this repo useful, please cite our paper.
+
+```
+
+@inproceedings{qiu2026seer,
+  title        =   {DAG: A Dual Correlation Network for Time Series Forecasting with Exogenous Variables},
+  author       =   {Qiu, Xiangfei and Zhu, Yuhan and Li, Zhengyu and Wu, Xingjian and Yang, Bin and Hu, Jilin},
+  booktitle    =   {ICML},
+  year         =   {2026}
+}
+```
+
 
 
 ## Contact
