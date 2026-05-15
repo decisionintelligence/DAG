@@ -61,7 +61,7 @@ If you find this repo useful, please cite our paper.
 
 ```
 
-@inproceedings{qiu2026seer,
+@inproceedings{qiu2026dag,
   title        =   {DAG: A Dual Correlation Network for Time Series Forecasting with Exogenous Variables},
   author       =   {Qiu, Xiangfei and Zhu, Yuhan and Li, Zhengyu and Wu, Xingjian and Yang, Bin and Hu, Jilin},
   booktitle    =   {ICML},
